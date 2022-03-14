@@ -1,0 +1,117 @@
+<div fxFlex fxLayout="column" class="base-layout">
+  <mat-card>
+    <div style="text-align: center">
+      <h1 mat-card-title style="text-align: center">
+        Задачи с по-голямо, по-малко или равно
+      </h1>
+
+      <h3 mat-card-subtitle>брой последователни опита: {{ total }}</h3>
+    </div>
+    <mat-card-content>
+      <table>
+        <thead>
+          <tr>
+            <th>№</th>
+            <th width="70%">Израз</th>
+            <th width="10%">Решение</th>
+            <th width="15%">Резултат</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of count; let i = index">
+            <td>
+              {{ i + 1 }}
+            </td>
+            <td>
+              <span class="number">
+                {{ item.first }}
+              </span>
+              <span class="description">е <span>> < или = </span>от</span>
+              <span class="number">
+                {{ item.second }}
+              </span>
+            </td>
+            <td [formGroup]="form">
+              <div formArrayName="responses">
+                <mat-button-toggle-group
+                  [formControlName]="i"
+                  #group="matButtonToggleGroup"
+                >
+                  <mat-button-toggle
+                    value="<"
+                    aria-label="Text align left"
+                    (click)="checkAnswer(i)"
+                    [disabled]="group.value"
+                  >
+                    <mat-icon svgIcon="less"></mat-icon>
+                  </mat-button-toggle>
+                  <mat-button-toggle
+                    value="="
+                    aria-label="Text align center"
+                    (click)="checkAnswer(i)"
+                    [disabled]="group.value"
+                  >
+                    <mat-icon svgIcon="equals"></mat-icon>
+                  </mat-button-toggle>
+                  <mat-button-toggle
+                    value=">"
+                    aria-label="Text align right"
+                    (click)="checkAnswer(i)"
+                    [disabled]="group.value"
+                  >
+                    <mat-icon svgIcon="greater"></mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+                <mat-error
+                  *ngIf="responseArray.controls[i].hasError('pattern')"
+                >
+                  Полето е с грешен формат</mat-error
+                >
+              </div>
+              <!-- <div class="example-selected-value">
+                Selected value: {{ group.value }}
+              </div> -->
+            </td>
+            <td>
+              <!-- <button
+                *ngIf="hasAnswer(i) === false"
+                mat-mini-fab
+                color="primary"
+                (click)="checkAnswer(i)"
+                [disabled]="responseArray.controls[i].invalid"
+              >
+                <mat-icon>send</mat-icon>
+              </button> -->
+              <mat-icon
+                *ngIf="hasAnswer(i)"
+                [ngStyle]="{
+                  color: hasAnswer(i) && item.result ? 'green' : 'red',
+                  'font-size': '40px'
+                }"
+              >
+                {{ item.result ? "task_alt" : "cancel" }}
+              </mat-icon>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div
+        class="result"
+        [ngStyle]="{
+          'background-color': result.indexOf('10') > -1 ? 'green' : '',
+          color: result.indexOf('10') > -1 ? 'white' : ''
+        }"
+        *ngIf="hasResult()"
+      >
+        {{ result }}
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end" style="margin-top: 55px">
+      <button mat-button (click)="checkResult()">Изчисли Резултат</button>
+      <button mat-button (click)="generateNew()">Генерирай нови задачи</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <div></div>
+</div>
