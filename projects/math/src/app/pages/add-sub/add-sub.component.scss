@@ -11,6 +11,14 @@ table {
   }
 }
 
+.base-layout {
+  overflow: auto;
+}
+
+.content {
+  overflow: auto;
+}
+
 .description {
   background-color: lightblue;
   padding: 15px;
@@ -31,4 +39,5 @@ table {
 .number {
   font-size: 28px;
   font-weight: 700;
+  min-width: 25px;
 }
